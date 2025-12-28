@@ -11,29 +11,38 @@ import { locale as french } from '../shared/i18n/fr';
 export class SkillsComponent implements OnInit {
   skills: any = {
     technologies: [
-      { name: 'Java, J2EE, Spring, C#', percent: 90, remark: 'excellent' },
-      { name: 'PHP', percent: 70, remark: 'good' },
-      { name: 'Android', percent: 90, remark: 'excellent' },
-      { name: 'Python, C++', percent: 70, remark: 'very-good' },
       {
-        name: 'JavaScript, BootStrap, Angular',
+        name: 'Angular, Typescript, SCSS',
         percent: 90,
         remark: 'excellent',
       },
+      {
+        name: 'Wordpress, Java Script, SCSS',
+        percent: 80,
+        remark: 'very-good',
+      },
+      { name: 'Laravel, PHP , Java Script', percent: 70, remark: 'good' },
+      { name: 'Android, Flutter, Dart', percent: 60, remark: 'fair' },
     ],
     tools: [
-      { name: 'Git', percent: 90, remark: 'excellent' },
-      { name: 'Office', percent: 90, remark: 'excellent' },
-      { name: 'Linux, Windows', percent: 70, remark: 'very-good' },
-      { name: 'MySql, PgSql', percent: 90, remark: 'excellent' },
-      { name: 'Docker, Kubernetes', percent: 50, remark: 'average' },
+      {
+        name: 'Git, Github, Bitbucket',
+        percent: 90,
+        remark: 'excellent',
+      },
+      {
+        name: 'Clickup, Monday.com, Jira, Trello',
+        percent: 90,
+        remark: 'excellent',
+      },
+      { name: 'Linux, Windows', percent: 80, remark: 'very-good' },
+      { name: 'VS Code', percent: 90, remark: 'excellent' },
     ],
     methodologies: [
-      { name: 'Scrum', percent: 70, remark: 'very-good' },
-      { name: 'Uml', percent: 90, remark: 'excellent' },
-      { name: 'Disign Thinking', percent: 70, remark: 'good' },
-      { name: 'TDD', percent: 90, remark: 'excellent' },
-      { name: 'DevOps', percent: 50, remark: 'average' },
+      { name: 'Kanban', percent: 90, remark: 'excellent' },
+      { name: 'Scrum', percent: 70, remark: 'fair' },
+      { name: 'Agile', percent: 90, remark: 'excellent' },
+      { name: 'Waterfall', percent: 80, remark: 'very-good' },
     ],
   };
 

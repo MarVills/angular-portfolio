@@ -3,7 +3,6 @@ import { TranslationLoaderService } from '../service/translation-loader.service'
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
 import { projectsEn } from '../api/projectsEn';
-import { projectsFr } from '../api/projectsFr';
 
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -22,8 +21,6 @@ export class ProjectsComponent implements OnInit {
     this._translateService.onLangChange.subscribe(() => {
       if (this._translateService.currentLang == 'en') {
         this.projects = projectsEn;
-      } else {
-        this.projects = projectsFr;
       }
     });
   }
@@ -51,7 +48,7 @@ export class ProjectsComponent implements OnInit {
   onMouse(idLink: String, idImage: String) {
     $('#' + idLink)
       .on('mouseenter', function () {
-        console.log('on mouseenter');
+        // console.log('on mouseenter');
         $('#' + idImage).css('opacity', '0.3');
         $('#' + idLink).css('opacity', '1');
       })

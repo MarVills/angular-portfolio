@@ -3,7 +3,7 @@ import * as awesom from '@fortawesome/free-solid-svg-icons';
 import { TranslationLoaderService } from '../service/translation-loader.service';
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
-import { experiencesFr } from '../api/experiencesFr';
+// import { experiencesFr } from '../api/experiencesFr';
 import { experiencesEn } from '../api/experiencesEn';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -16,6 +16,7 @@ export class CurriculumVitaeComponent implements OnInit {
   planeIcon: any;
   gameIcon: any;
   volleyBallIcon: any;
+  hammerIcon: any;
 
   constructor(
     private _translationLoaderService: TranslationLoaderService,
@@ -25,8 +26,6 @@ export class CurriculumVitaeComponent implements OnInit {
     this._translateService.onLangChange.subscribe(() => {
       if (this._translateService.currentLang == 'en') {
         this.experiences = experiencesEn;
-      } else {
-        this.experiences = experiencesFr;
       }
     });
   }
@@ -34,7 +33,7 @@ export class CurriculumVitaeComponent implements OnInit {
   ngOnInit(): void {
     this.planeIcon = awesom.faPlane;
     this.gameIcon = awesom.faGamepad;
-    this.volleyBallIcon = awesom.faVolleyballBall;
+    this.hammerIcon = awesom.faHammer;
   }
 
   detailOnClick(experience: any) {

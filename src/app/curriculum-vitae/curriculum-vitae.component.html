@@ -11,28 +11,20 @@
         </h4>
         <ul class="timeline">
           <li>
-            <h5>{{ "education.masterDegreeTwo" | translate }}</h5>
-            <em class="font-italic"
-              >{{ "education.masterDegreeTwoDesc" | translate }}<br />
-              {{ "education.university" | translate }}</em
-            >
-            <p class="year p-2 d-flex justify-content-center">2019 - 2020</p>
-          </li>
-          <li>
-            <h5>{{ "education.masterDegreeOne" | translate }}</h5>
-            <em class="font-italic"
-              >{{ "education.masterDegreeOneDesc" | translate }} <br />
-              {{ "education.university" | translate }}</em
-            >
-            <p class="year p-2 d-flex justify-content-center">2018 - 2019</p>
-          </li>
-          <li>
             <h5>{{ "education.bachlorDegree" | translate }}</h5>
             <em class="font-italic"
               >{{ "education.bachlorDegreeDesc" | translate }}<br />
-              {{ "education.university" | translate }}</em
+              {{ "education.collegeUniversity" | translate }}</em
             >
-            <p class="year p-2 d-flex justify-content-center">2015 - 2018</p>
+            <p class="year p-2 d-flex justify-content-center">2018 - 2022</p>
+          </li>
+          <li>
+            <h5>{{ "education.seniorHigh" | translate }}</h5>
+            <em class="font-italic"
+              >{{ "education.seniorHighDesc" | translate }} <br />
+              {{ "education.seniorHighUniversity" | translate }}</em
+            >
+            <p class="year p-2 d-flex justify-content-center">2016 - 2018</p>
           </li>
         </ul>
       </div>
@@ -90,17 +82,17 @@
             <div class="noProgress langue">
               <span class=""
                 ><img
-                  src="assets/images/france-flag.png"
+                  src="assets/images/philippines-flag.png"
                   width="20"
                   alt="drapeau de la france"
-                /><strong> {{ "education.french" | translate }}</strong>
+                /><strong> {{ "education.filipino" | translate }}</strong>
                 <i class="val"> {{ "education.fluent" | translate }}</i></span
               >
             </div>
             <div class="noProgress langue">
               <span class=""
                 ><img
-                  src="assets/images/united-kingdom-flag.png"
+                  src="assets/images/united-states-flag.png"
                   width="20"
                   alt="drapeau du royaume uni"
                 /><strong> {{ "education.english" | translate }}</strong>
@@ -122,11 +114,11 @@
             </h4>
             <div class="noProgress langue">
               <span>
-                <fa-icon [icon]="volleyBallIcon"></fa-icon
-                ><strong> {{ "education.sport" | translate }}</strong>
+                <fa-icon [icon]="hammerIcon"></fa-icon>
+                <strong> {{ "education.otherSkills" | translate }}</strong>
                 <i class="val">
-                  5 {{ "education.years" | translate }} Volley Ball</i
-                >
+                  {{ "education.skills" | translate }}
+                </i>
               </span>
             </div>
 

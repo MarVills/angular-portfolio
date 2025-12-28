@@ -8,17 +8,15 @@ import { ProjectsComponent } from './projects/projects.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 const routes: Routes = [
-  { path: '', component: AppComponent }, 
-  { path: 'skills', component: SkillsComponent }, 
-  { path: 'projects', component: ProjectsComponent }, 
-  { path: 'cv', component: CurriculumVitaeComponent }, 
-  { path: 'about', component: AboutComponent }];
+  { path: '', component: AppComponent },
+  { path: 'skills', component: SkillsComponent },
+  // { path: 'projects', component: ProjectsComponent },
+  { path: 'cv', component: CurriculumVitaeComponent },
+  { path: 'about', component: AboutComponent },
+];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-    TranslateModule.forRoot(),
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes), TranslateModule.forRoot()],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
