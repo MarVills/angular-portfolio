@@ -1,14 +1,14 @@
 {
-  "name": "my-portfolio",
+  "name": "angular-portfolio",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production",
     "test": "set NODE_OPTIONS=--openssl-legacy-provider && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng b --prod --base-href https://zinedineBenkhider.github.io/portfolio/ && npx ngh --dir=dist/my-portfolio"
+    "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production --base-href /Angular-Portfolio/ && npx gh-pages -d dist/angular-portfolio"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +45,7 @@
     "@types/node": "^12.11.1",
     "angular-cli-ghpages": "^0.6.2",
     "codelyzer": "^6.0.0",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.1.0",

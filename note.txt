@@ -1,0 +1,23 @@
+
+
+"deploy": "ng b --prod --base-href https://marvills.github.io/portfolio/ && npx ngh --dir=dist/my-portfolio"
+"deploy": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production && npx gh-pages -d dist/your-app-name"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
