@@ -23,7 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "baseHref": "/Angular-Portfolio/",
+            "baseHref": "/angular-portfolio/",
             "assets": ["src/favicon.ico", "src/assets"],
             "allowedCommonJsDependencies": ["jquery"],
             "stylePreprocessorOptions": {

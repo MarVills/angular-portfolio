@@ -8,7 +8,7 @@
     "test": "set NODE_OPTIONS=--openssl-legacy-provider && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production --base-href /Angular-Portfolio/ && copy dist\\angular-portfolio\\index.html dist\\angular-portfolio\\404.html && npx gh-pages -d dist/angular-portfolio"
+    "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production --base-href /angular-portfolio/ && copy dist\\angular-portfolio\\index.html dist\\angular-portfolio\\404.html && npx gh-pages -d dist/angular-portfolio"
   },
   "private": true,
   "dependencies": {
