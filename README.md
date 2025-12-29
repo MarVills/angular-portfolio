@@ -17,3 +17,5 @@ _(Ctrl/Cmd + Click to open in a new tab)_
   </a>
 </body>
 </html>
+
+[go](http://stackoverflow.com){:target="\_blank"}
