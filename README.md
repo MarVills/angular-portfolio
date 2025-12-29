@@ -18,4 +18,10 @@ _(Ctrl/Cmd + Click to open in a new tab)_
 </body>
 </html>
 
-[go](http://stackoverflow.com){:target="\_blank"}
+<!--
+Source - https://stackoverflow.com/a
+Posted by Ben Souchet
+Retrieved 2025-12-29, License - CC BY-SA 4.0
+-->
+
+[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="\_blank" rel="noopener"}
