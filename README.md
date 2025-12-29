@@ -2,26 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
 
-[![View Live Site](https://img.shields.io/badge/Live-Site-blue?style=for-the-badge)](https://MarVills.github.io/Angular-Portfolio/)  
-_(Ctrl/Cmd + Click to open in a new tab)_
+> [!NOTE]
+> "Opening links in a new tab is disabled by GitHub for security reasons."
+> _(Ctrl/Cmd + Click to open in a new tab)_
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Open Live Site</title>
-</head>
-<body>
-  <a href="https://MarVills.github.io/Angular-Portfolio/" target="_blank">
-    <img src="https://img.shields.io/badge/Live-Site-blue?style=for-the-badge" alt="View Live Site"/>
-  </a>
-</body>
-</html>
-
-<!--
-Source - https://stackoverflow.com/a
-Posted by Ben Souchet
-Retrieved 2025-12-29, License - CC BY-SA 4.0
--->
-
-[Stackoverflow The Key](https://stackoverflow.blog/2021/03/31/the-key-copy-paste/){:target="\_blank" rel="noopener"}
+[![View Live Site](https://img.shields.io/badge/Live-Site-blue?style=for-the-badge)](https://MarVills.github.io/Angular-Portfolio/)
