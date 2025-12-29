@@ -6,6 +6,10 @@ This project reflects my approach to building **clean, scalable, and user-focuse
 🔗 **Live Demo**  
 [![View Live Site](https://img.shields.io/badge/Live-Site-blue?style=for-the-badge)](https://marvills.github.io/angular-portfolio/)
 
+> [!NOTE]  
+> GitHub disables opening links in a new tab for security reasons.  
+> _(Ctrl / Cmd + Click to open links in a new tab)_
+
 ---
 
 ## 🌟 Overview
@@ -18,10 +22,6 @@ This portfolio serves as:
 
 The application is built using **Angular 11** and follows a **component-based architecture** for better scalability and maintainability.  
 It is deployed using **GitHub Pages** for fast and reliable access.
-
-> [!NOTE]  
-> GitHub disables opening links in a new tab for security reasons.  
-> _(Ctrl / Cmd + Click to open links in a new tab)_
 
 ---
 
