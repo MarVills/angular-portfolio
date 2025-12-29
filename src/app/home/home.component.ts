@@ -3,6 +3,7 @@ import { TranslationLoaderService } from '../service/translation-loader.service'
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
 import Typed from 'typed.js';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

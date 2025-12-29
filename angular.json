@@ -26,6 +26,9 @@
             "baseHref": "/Angular-Portfolio/",
             "assets": ["src/favicon.ico", "src/assets"],
             "allowedCommonJsDependencies": ["jquery"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/app/shared/styles"]
+            },
             "styles": [
               "src/custom-theme.scss",
               "node_modules/aos/dist/aos.css",

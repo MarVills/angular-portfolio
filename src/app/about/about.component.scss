@@ -1,3 +1,6 @@
+@use "global-styles";
+@use "index" as styles;
+
 ul {
   list-style-type: none;
 }
@@ -38,4 +41,8 @@ h3 {
 
 a {
   text-decoration: none;
+}
+
+.container {
+  padding: 16px !important;
 }

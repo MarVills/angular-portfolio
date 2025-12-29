@@ -1,25 +1,80 @@
+@use "global-styles";
+@use "index" as styles;
+
 #home {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh; // Full viewport height
   background: top center;
   background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+
+  .container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+
+    h1 {
+      color: #fff;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: bold;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      text-align: left;
+
+      @include styles.respond(md) {
+        line-height: 1.1;
+      }
+      @include styles.respond(sm) {
+        font-size: 2rem !important;
+        line-height: 1.1;
+      }
+    }
+
+    p {
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      line-height: 1.4;
+      margin-bottom: 50px;
+      text-align: left;
+
+      @include styles.respond(md) {
+        line-height: 1.3;
+      }
+      @include styles.respond(sm) {
+        font-size: 18px !important;
+      }
+
+      span {
+        color: #fff;
+        padding-bottom: 4px;
+        letter-spacing: 1px;
+        border-bottom: 3px solid #149ddd;
+      }
+    }
+  }
 }
 
-#home p {
-  color: #fff;
-  margin-bottom: 50px;
-  font-size: 26px;
-  font-family: "Poppins", sans-serif;
-  display: block;
-}
+// Extra responsiveness for very small screens
+@media (max-width: 480px) {
+  #home {
+    padding: 1rem;
 
-h1 {
-  color: #fff;
-}
-
-#home p span {
-  color: #fff;
-  padding-bottom: 4px;
-  letter-spacing: 1px;
-  border-bottom: 3px solid #149ddd;
+    .container {
+      h1 {
+        font-size: 1.8rem !important;
+      }
+      p {
+        font-size: 16px !important;
+        margin-bottom: 30px;
+      }
+    }
+  }
 }

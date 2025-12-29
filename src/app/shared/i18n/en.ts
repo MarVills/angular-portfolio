@@ -80,7 +80,7 @@ export const locale = {
       contactMe: 'Contact me',
     },
     home: {
-      iAmDeveloper: 'I am developer',
+      iAmDeveloper: 'Developer specializing',
     },
     projects: {
       title: 'Portfolio',
