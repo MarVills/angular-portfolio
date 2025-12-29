@@ -53,6 +53,11 @@ ul.timeline > li:before {
 }
 button {
   height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: nowrap;
+  gap: 5px;
 }
 
 .langue {
