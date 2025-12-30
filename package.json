@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-main",
+  "version": "1.0.0",
+  "description": "A fully responsive and modern **Angular 11 portfolio website** built to showcase my skills, projects, and experience as a **Front-End / Web Developer**.   This project reflects my approach to building **clean, scalable, and user-focused web applications**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^7.0.12"
+  }
+}

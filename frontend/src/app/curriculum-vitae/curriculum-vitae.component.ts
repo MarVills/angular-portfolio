@@ -4,7 +4,7 @@ import { TranslationLoaderService } from '../service/translation-loader.service'
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
 // import { experiencesFr } from '../api/experiencesFr';
-import { experiencesEn } from '../api/experiencesEn';
+import { experiencesEn } from '../lang/experiencesEn';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-curriculum-vitae',

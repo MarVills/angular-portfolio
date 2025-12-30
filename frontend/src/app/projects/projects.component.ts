@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslationLoaderService } from '../service/translation-loader.service';
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
-import { projectsEn } from '../api/projectsEn';
+import { projectsEn } from '../lang/projectsEn';
 
 import { TranslateService } from '@ngx-translate/core';
 @Component({
