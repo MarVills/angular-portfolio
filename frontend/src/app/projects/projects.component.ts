@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslationLoaderService } from '../service/translation-loader.service';
+import { TranslationLoaderService } from '../services/translation-loader.service';
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
 import { projectsEn } from '../lang/projectsEn';
