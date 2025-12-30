@@ -16,7 +16,8 @@ app.post("/send-email", async (req, res) => {
 
   try {
     const data = await resend.emails.send({
-      from: "Portfolio <onboarding@resend.dev>",
+      // from: "New message from your portfolio  <contact@marvills.dev>",
+      from: "Marvills Portfolio Message <onboarding@resend.dev>",
       to: ["villaflormarbenc@gmail.com"],
       subject: `Portfolio Message from ${name}`,
       html: `

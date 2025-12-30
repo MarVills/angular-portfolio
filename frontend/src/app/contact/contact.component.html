@@ -1,11 +1,15 @@
 <section id="contact">
-  <div class="container mb-5">
-    <h2>
-      <strong>{{ "contact.contactMe" | translate }}</strong>
-    </h2>
-    <span class="bar-title mb-5"></span>
-    <div class="row" data-aos="fade-up" data-aos-anchor-placement="top-center">
-      <form (ngSubmit)="sendEmail()">
+  <form (ngSubmit)="sendEmail()" #contactForm="ngForm">
+    <div class="container mb-5">
+      <h2>
+        <strong>{{ "contact.contactMe" | translate }}</strong>
+      </h2>
+      <span class="bar-title mb-5"></span>
+      <div
+        class="row"
+        data-aos="fade-up"
+        data-aos-anchor-placement="top-center"
+      >
         <div class="col-md-3 col-lg-3">
           <div class="contact-info">
             <img src="assets/images/contact-image.png" alt="image" />
@@ -25,6 +29,7 @@
                   id="identite"
                   placeholder="{{ 'contact.enterName' | translate }}"
                   name="fname"
+                  [(ngModel)]="name"
                 />
               </div>
             </div>
@@ -39,6 +44,7 @@
                   id="email"
                   placeholder="{{ 'contact.enterEmail' | translate }}"
                   name="email"
+                  [(ngModel)]="email"
                 />
               </div>
             </div>
@@ -53,6 +59,7 @@
                   id="object"
                   placeholder="{{ 'contact.enterSubject' | translate }}"
                   name="object"
+                  [(ngModel)]="subject"
                 />
               </div>
             </div>
@@ -61,7 +68,15 @@
                 "contact.message" | translate
               }}</label>
               <div class="col-sm-10">
-                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <!-- <textarea class="form-control" rows="5" id="comment"></textarea> -->
+                <textarea
+                  class="form-control"
+                  rows="5"
+                  id="comment"
+                  name="message"
+                  [(ngModel)]="message"
+                  required
+                ></textarea>
               </div>
             </div>
             <div class="form-group">
@@ -73,7 +88,7 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
 </section>
