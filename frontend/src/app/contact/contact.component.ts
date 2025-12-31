@@ -40,30 +40,12 @@ export class ContactComponent implements OnInit {
     this.selectedFiles.forEach((file) => {
       formData.append('attachments', file);
     });
-    // Uncomment this if you want to test locally with your backend
-    this.http.post('http://localhost:3000/send-email', formData).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.isSending = false;
-        alert('Email sent successfully!');
-        this.name = '';
-        this.email = '';
-        this.subject = '';
-        this.message = '';
-        this.selectedFiles = [];
-      },
-      error: (err) => {
-        console.error('Email send error:', err);
-        this.isSending = false;
-        alert('Failed to send email. Please try again later.');
-      },
-    });
-    // // Use EmailService (works with proxy or production environment)
-    // this.emailService.sendEmail(formData).subscribe({
+    // // Uncomment this if you want to test locally with your backend
+    // this.http.post('http://localhost:3000/send-email', formData).subscribe({
     //   next: (res) => {
     //     console.log(res);
+    //     this.isSending = false;
     //     alert('Email sent successfully!');
-    //     // Clear form fields
     //     this.name = '';
     //     this.email = '';
     //     this.subject = '';
@@ -72,9 +54,27 @@ export class ContactComponent implements OnInit {
     //   },
     //   error: (err) => {
     //     console.error('Email send error:', err);
+    //     this.isSending = false;
     //     alert('Failed to send email. Please try again later.');
     //   },
     // });
+    // Use EmailService (works with proxy or production environment)
+    this.emailService.sendEmail(formData).subscribe({
+      next: (res) => {
+        console.log(res);
+        alert('Email sent successfully!');
+        // Clear form fields
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+        this.selectedFiles = [];
+      },
+      error: (err) => {
+        console.error('Email send error:', err);
+        alert('Failed to send email. Please try again later.');
+      },
+    });
   }
 
   onFileSelected(event: any) {
