@@ -35,6 +35,7 @@ export const locale = {
       enterEmail: 'Enter your email',
       object: 'Object',
       enterObject: 'Enter object',
+      attachment: 'Attachment',
       message: 'Message',
       send: 'Send',
     },

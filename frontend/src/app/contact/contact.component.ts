@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslationLoaderService } from '../services/translation-loader.service';
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
@@ -19,6 +18,7 @@ export class ContactComponent implements OnInit {
   isSending = false;
   successMessage = '';
   errorMessage = '';
+  selectedFiles: File[] = [];
 
   constructor(
     private _translationLoaderService: TranslationLoaderService,
@@ -31,41 +31,54 @@ export class ContactComponent implements OnInit {
   ngOnInit(): void {}
 
   sendEmail() {
-    const payload = {
-      name: this.name,
-      email: this.email,
-      subject: this.subject,
-      message: this.message,
-    };
-
-    // // Uncomment this if you want to test locally with your backend
-    // this.http.post('http://localhost:3000/send-email', payload).subscribe({
-    //   next: () => {
-    //     alert('Email sent successfully!');
-    //     this.name = '';
-    //     this.email = '';
-    //     this.subject = '';
-    //     this.message = '';
-    //   },
-    //   error: () => {
-    //     alert('Failed to send email. Please try again later.');
-    //   },
-    // });
-
-    // Use EmailService (works with proxy or production environment)
-    this.emailService.sendEmail(payload).subscribe({
-      next: () => {
+    this.isSending = true;
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('email', this.email);
+    formData.append('subject', this.subject);
+    formData.append('message', this.message);
+    this.selectedFiles.forEach((file) => {
+      formData.append('attachments', file);
+    });
+    // Uncomment this if you want to test locally with your backend
+    this.http.post('http://localhost:3000/send-email', formData).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.isSending = false;
         alert('Email sent successfully!');
-        // Clear form fields
         this.name = '';
         this.email = '';
         this.subject = '';
         this.message = '';
+        this.selectedFiles = [];
       },
       error: (err) => {
         console.error('Email send error:', err);
+        this.isSending = false;
         alert('Failed to send email. Please try again later.');
       },
     });
+    // // Use EmailService (works with proxy or production environment)
+    // this.emailService.sendEmail(formData).subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //     alert('Email sent successfully!');
+    //     // Clear form fields
+    //     this.name = '';
+    //     this.email = '';
+    //     this.subject = '';
+    //     this.message = '';
+    //     this.selectedFiles = [];
+    //   },
+    //   error: (err) => {
+    //     console.error('Email send error:', err);
+    //     alert('Failed to send email. Please try again later.');
+    //   },
+    // });
+  }
+
+  onFileSelected(event: any) {
+    const files: FileList = event.target.files;
+    this.selectedFiles = Array.from(files);
   }
 }
