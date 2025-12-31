@@ -38,18 +38,7 @@ export class ContactComponent implements OnInit {
       message: this.message,
     };
 
-    // Uncomment this if you want to test locally with your backend
-    // this.http
-    //   .post('http://localhost:3000/send-email', {
-    //     name: this.name,
-    //     email: this.email,
-    //     message: this.message,
-    //   })
-    //   .subscribe({
-    //     next: () => alert('Email sent!'),
-    //     error: () => alert('Failed to send email'),
-    //   });
-
+    // // Uncomment this if you want to test locally with your backend
     // this.http.post('http://localhost:3000/send-email', payload).subscribe({
     //   next: () => {
     //     alert('Email sent successfully!');
