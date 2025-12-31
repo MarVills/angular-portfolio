@@ -22,7 +22,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const form = formidable({ multiples: true });
+  const form = formidable({ multiples: true, keepExtensions: true });
+
+  // Force formidable to parse files into memory
+  form.onPart = function (part) {
+    if (part.filename) {
+      const chunks = [];
+      part.on("data", (chunk) => chunks.push(chunk));
+      part.on("end", () => {
+        part.buffer = Buffer.concat(chunks);
+      });
+    } else {
+      form.handlePart(part);
+    }
+  };
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
@@ -49,7 +62,8 @@ export default async function handler(req, res) {
         for (const file of fileArray) {
           attachments.push({
             filename: file.originalFilename,
-            content: fs.readFileSync(file.filepath),
+            // content: fs.readFileSync(file.filepath),
+            content: file.buffer,
           });
         }
       }
