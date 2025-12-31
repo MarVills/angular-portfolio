@@ -22,10 +22,6 @@ export class EmailService {
   // }
 
   sendEmail(formData: FormData) {
-    // return this.http.post(
-    //   'https://your-vercel-app.vercel.app/api/send-email',
-    //   formData
-    // );
     return this.http.post(this.apiUrl, formData);
   }
 }

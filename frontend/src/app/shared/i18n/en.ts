@@ -38,6 +38,7 @@ export const locale = {
       attachment: 'Attachment',
       message: 'Message',
       send: 'Send',
+      sending: 'Sending',
     },
     education: {
       title: 'Curriculum Vitae',

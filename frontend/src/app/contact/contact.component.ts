@@ -69,10 +69,12 @@ export class ContactComponent implements OnInit {
         this.subject = '';
         this.message = '';
         this.selectedFiles = [];
+        this.isSending = false;
       },
       error: (err) => {
         console.error('Email send error:', err);
         alert('Failed to send email. Please try again later.');
+        this.isSending = false;
       },
     });
   }
