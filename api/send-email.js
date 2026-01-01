@@ -1,18 +1,22 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
-  const allowedOrigins = ["https://marvills.github.io", "http://localhost:4200"];
-  const origin = req.headers.origin;
-
-  // ✅ Set Access-Control-Allow-Origin dynamically if allowed
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // ✅ Handle OPTIONS preflight request
   if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  if (req.method === "OPTIONS") {
+    const allowedOrigins = ["https://marvills.github.io", "http://localhost:4200"];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     return res.status(200).end();
   }
 
