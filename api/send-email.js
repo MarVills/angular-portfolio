@@ -1,12 +1,12 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
-  // ⚠️ Must handle preflight first
+  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
-    res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    return res.status(200).end(); // preflight response
+    return res.status(200).end();
   }
 
   // Only POST allowed

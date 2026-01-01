@@ -18,7 +18,6 @@ export class EmailService {
     subject?: string;
     message: string;
   }): Observable<any> {
-    console.log('sendEmailAPIUrl', this.sendEmailAPIUrl);
     return this.http.post(this.sendEmailAPIUrl, data);
   }
 
