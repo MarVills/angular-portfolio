@@ -61,6 +61,10 @@
 // =================================================
 import nodemailer from "nodemailer";
 
+export const config = {
+  runtime: "nodejs",
+};
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
@@ -74,8 +78,6 @@ export default async function handler(req, res) {
     res.setHeader("Allow", "POST, OPTIONS");
     return res.status(405).json({ error: "Method Not Allowed" });
   }
-
-  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
 
   try {
     const { name, email, subject, message } = req.body;
