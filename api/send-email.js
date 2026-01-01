@@ -1,17 +1,21 @@
-const express = require("express");
-const nodemailer = require("nodemailer");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import nodemailer from "nodemailer";
 
-const app = express();
+export default async function handler(req, res) {
+  // 1️⃣ Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io"); // allow your frontend
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing form-urlencoded
+  // 2️⃣ Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-// Route to handle sending email
-app.post("/send-email", async (req, res) => {
+  // 3️⃣ Only allow POST requests
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
     const { name, email, subject, message } = req.body;
 
@@ -19,27 +23,27 @@ app.post("/send-email", async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    // Create transporter (use your SMTP credentials)
+    // 4️⃣ Create transporter (use environment variables in Vercel)
     const transporter = nodemailer.createTransport({
-      host: "smtp.example.com", // e.g., smtp.gmail.com
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      host: process.env.SMTP_HOST, // e.g., smtp.gmail.com
+      port: process.env.SMTP_PORT || 587,
+      secure: false, // true for 465
       auth: {
-        user: "your_email@example.com",
-        pass: "your_email_password",
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
-    // Email options
+    // 5️⃣ Email options
     const mailOptions = {
-      from: `"${name}" <${email}>`, // sender info
-      to: "recipient@example.com", // your destination email
-      subject: subject,
+      from: `"${name}" <${email}>`,
+      to: process.env.DESTINATION_EMAIL, // your email
+      subject,
       text: message,
       html: `<p>${message}</p>`,
     };
 
-    // Send email
+    // 6️⃣ Send email
     await transporter.sendMail(mailOptions);
 
     res.status(200).json({ message: "Email sent successfully!" });
@@ -47,11 +51,64 @@ app.post("/send-email", async (req, res) => {
     console.error("Email send error:", error);
     res.status(500).json({ error: "Failed to send email." });
   }
-});
+}
 
-// Start server (for local testing)
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// const express = require("express");
+// const nodemailer = require("nodemailer");
+// const bodyParser = require("body-parser");
+// const cors = require("cors");
+
+// const app = express();
+
+// // Middleware
+// app.use(cors());
+// app.use(bodyParser.json()); // for parsing application/json
+// app.use(bodyParser.urlencoded({ extended: true })); // for parsing form-urlencoded
+
+// // Route to handle sending email
+// app.post("/send-email", async (req, res) => {
+//   try {
+//     const { name, email, subject, message } = req.body;
+
+//     if (!name || !email || !subject || !message) {
+//       return res.status(400).json({ error: "All fields are required." });
+//     }
+
+//     // Create transporter (use your SMTP credentials)
+//     const transporter = nodemailer.createTransport({
+//       host: "smtp.example.com", // e.g., smtp.gmail.com
+//       port: 587,
+//       secure: false, // true for 465, false for other ports
+//       auth: {
+//         user: "your_email@example.com",
+//         pass: "your_email_password",
+//       },
+//     });
+
+//     // Email options
+//     const mailOptions = {
+//       from: `"${name}" <${email}>`, // sender info
+//       to: "recipient@example.com", // your destination email
+//       subject: subject,
+//       text: message,
+//       html: `<p>${message}</p>`,
+//     };
+
+//     // Send email
+//     await transporter.sendMail(mailOptions);
+
+//     res.status(200).json({ message: "Email sent successfully!" });
+//   } catch (error) {
+//     console.error("Email send error:", error);
+//     res.status(500).json({ error: "Failed to send email." });
+//   }
+// });
+
+// // Start server (for local testing)
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// =======================================================
 
 // import nodemailer from "nodemailer";
 
