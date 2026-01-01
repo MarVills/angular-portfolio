@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailService {
-  private sendEmailAPIUrl = '/api/send-email';
-  // private sendEmailAPIUrl =
-  //   'https://angular-portfolio.vercel.app/api/send-email';
-  private sendEmailWithAttachmentAPIUrl =
-    'https://angular-portfolio.vercel.app/api/send-email-with-attachments';
+  private sendEmailAPIUrl = `${environment.apiUrl}/send-email`;
+  private sendEmailWithAttachmentAPIUrl = `${environment.apiUrl}/send-email-with-attachments`;
 
   constructor(private http: HttpClient) {}
 

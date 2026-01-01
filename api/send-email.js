@@ -9,14 +9,14 @@ export default async function handler(req, res) {
   console.log("req.method", req.method);
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // respond to preflight
+    return res.status(200).end();
   }
 
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" + req.method });
   }
 
-  const { name, email, message } = req.body;
+  const { name, email, subject, message } = req.body;
 
   try {
     const transporter = nodemailer.createTransport({
