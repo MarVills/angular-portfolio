@@ -18,10 +18,18 @@ export class EmailService {
     subject?: string;
     message: string;
   }): Observable<any> {
-    return this.http.post(this.sendEmailAPIUrl, data);
+    return this.http.post(this.sendEmailAPIUrl, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
   sendEmailWithAttachments(formData: FormData) {
-    return this.http.post(this.sendEmailWithAttachmentAPIUrl, formData);
+    return this.http.post(this.sendEmailWithAttachmentAPIUrl, formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }
