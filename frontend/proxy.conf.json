@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://angular-portfolio.vercel.app",
+    "target": "https://angular-portfolio.vercel.app/",
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug"
