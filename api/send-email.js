@@ -1,20 +1,22 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
-  // 1️⃣ Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io"); // allow your frontend
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // 2️⃣ Handle preflight OPTIONS request
+  // ⚠️ Must handle preflight first
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
+    res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end(); // preflight response
   }
 
-  // 3️⃣ Only allow POST requests
+  // Only POST allowed
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.setHeader("Allow", "POST, OPTIONS");
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  // ✅ CORS headers for actual POST request
+  res.setHeader("Access-Control-Allow-Origin", "https://marvills.github.io");
 
   try {
     const { name, email, subject, message } = req.body;
@@ -23,27 +25,24 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    // 4️⃣ Create transporter (use environment variables in Vercel)
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST, // e.g., smtp.gmail.com
+      host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT || 587,
-      secure: false, // true for 465
+      secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     });
 
-    // 5️⃣ Email options
     const mailOptions = {
       from: `"${name}" <${email}>`,
-      to: process.env.DESTINATION_EMAIL, // your email
+      to: process.env.DESTINATION_EMAIL,
       subject,
       text: message,
       html: `<p>${message}</p>`,
     };
 
-    // 6️⃣ Send email
     await transporter.sendMail(mailOptions);
 
     res.status(200).json({ message: "Email sent successfully!" });
