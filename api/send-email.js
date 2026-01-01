@@ -1,45 +1,102 @@
-import nodemailer from "nodemailer";
+const express = require("express");
+const nodemailer = require("nodemailer");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
-export default async function handler(req, res) {
-  // Handle CORS preflight request
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+const app = express();
 
-  console.log("req.method", req.method);
+// Middleware
+app.use(cors());
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing form-urlencoded
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" + req.method });
-  }
-
-  const { name, email, subject, message } = req.body;
-
+// Route to handle sending email
+app.post("/send-email", async (req, res) => {
   try {
+    const { name, email, subject, message } = req.body;
+
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    // Create transporter (use your SMTP credentials)
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.example.com", // e.g., smtp.gmail.com
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: "your_email@example.com",
+        pass: "your_email_password",
       },
     });
 
-    await transporter.sendMail({
-      from: email,
-      to: process.env.EMAIL_USER,
-      subject: `New message from ${name}`,
+    // Email options
+    const mailOptions = {
+      from: `"${name}" <${email}>`, // sender info
+      to: "recipient@example.com", // your destination email
+      subject: subject,
       text: message,
-    });
+      html: `<p>${message}</p>`,
+    };
 
-    return res.status(200).json({ success: true });
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Email sent successfully!" });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Email failed" });
+    console.error("Email send error:", error);
+    res.status(500).json({ error: "Failed to send email." });
   }
-}
+});
+
+// Start server (for local testing)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// import nodemailer from "nodemailer";
+
+// export default async function handler(req, res) {
+//   // Handle CORS preflight request
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+//   console.log("req.method", req.method);
+
+//   if (req.method === "OPTIONS") {
+//     return res.status(200).end();
+//   }
+
+//   if (req.method !== "POST") {
+//     return res.status(405).json({ message: "Method Not Allowed" + req.method });
+//   }
+
+//   const { name, email, subject, message } = req.body;
+
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       service: "gmail",
+//       auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS,
+//       },
+//     });
+
+//     await transporter.sendMail({
+//       from: email,
+//       to: process.env.EMAIL_USER,
+//       subject: `New message from ${name}`,
+//       text: message,
+//     });
+
+//     return res.status(200).json({ success: true });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ error: "Email failed" });
+//   }
+// }
+
+// ===========================================================
 
 // import express from "express";
 // import cors from "cors";
