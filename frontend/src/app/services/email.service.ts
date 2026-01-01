@@ -6,22 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmailService {
-  // Use relative path so Angular dev server proxy handles CORS
-  private apiUrl = '/api/send-email';
+  private sendEmailAPIUrl = '/api/send-email';
+  private sendEmailWithAttachmentAPIUrl =
+    'https://angular-portfolio.vercel.app/api/send-email-with-attachments';
 
   constructor(private http: HttpClient) {}
 
-  // sendEmail(data: {
-  //   name: string;
-  //   email: string;
-  //   subject?: string;
-  //   message: string;
-  // }): Observable<any> {
-  //   // All requests to /api/send-email will be proxied in dev
-  //   return this.http.post(this.apiUrl, data);
-  // }
+  sendEmail(data: {
+    name: string;
+    email: string;
+    subject?: string;
+    message: string;
+  }): Observable<any> {
+    return this.http.post(this.sendEmailAPIUrl, data);
+  }
 
-  sendEmail(formData: FormData) {
-    return this.http.post(this.apiUrl, formData);
+  sendEmailWithAttachments(formData: FormData) {
+    return this.http.post(this.sendEmailWithAttachmentAPIUrl, formData);
   }
 }

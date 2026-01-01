@@ -63,17 +63,39 @@
                 />
               </div>
             </div>
-            <div class="form-group">
-              <label class="control-label col-sm-2">
+            <div class="form-group column align-items-start">
+              <label class="col-sm-2 col-form-label">
                 {{ "contact.attachment" | translate }}
               </label>
               <div class="col-sm-10">
-                <input
-                  type="file"
-                  class="form-control"
-                  multiple
-                  (change)="onFileSelected($event)"
-                />
+                <div class="custom-file-wrapper mb-2">
+                  <button type="button" class="btn btn-primary btn-file">
+                    Select Files
+                  </button>
+                  <input
+                    #fileInput
+                    type="file"
+                    multiple
+                    (change)="onFileSelected($event)"
+                  />
+                </div>
+                <div *ngIf="selectedFiles.length" class="selected-files">
+                  <div
+                    class="file-badge"
+                    *ngFor="let file of selectedFiles; let i = index"
+                  >
+                    <span class="file-name" (click)="previewFile(file)">
+                      {{ file.name }}
+                    </span>
+                    <span class="remove-file" (click)="removeFile(i)">
+                      <i class="bi bi-x-circle-fill"></i>
+                    </span>
+                  </div>
+                  <span class="remove-file" (click)="clearAllFiles()">
+                    <i class="bi bi-trash"></i>
+                    <span> Clear all</span>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group">
@@ -114,3 +136,11 @@
     </div>
   </form>
 </section>
+
+<app-file-preview-dialog
+  [fileName]="previewFileName"
+  [fileUrl]="previewFileUrl"
+  [visible]="showPreview"
+  [ngClass]="fadeClass"
+  (close)="closePreview()"
+></app-file-preview-dialog>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslationLoaderService } from '../services/translation-loader.service';
 import { locale as english } from '../shared/i18n/en';
 import { locale as french } from '../shared/i18n/fr';
@@ -11,6 +11,7 @@ import { EmailService } from '../services/email.service';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   name = '';
   email = '';
   subject = '';
@@ -19,6 +20,12 @@ export class ContactComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
   selectedFiles: File[] = [];
+  fileNames: string = '';
+  previewFileUrl: string | null = null;
+  previewFileName: string = '';
+  showPreview: boolean = false;
+  fadeClass = '';
+  dialogTypeClass = '';
 
   constructor(
     private _translationLoaderService: TranslationLoaderService,
@@ -32,55 +39,151 @@ export class ContactComponent implements OnInit {
 
   sendEmail() {
     this.isSending = true;
-    const formData = new FormData();
-    formData.append('name', this.name);
-    formData.append('email', this.email);
-    formData.append('subject', this.subject);
-    formData.append('message', this.message);
-    this.selectedFiles.forEach((file) => {
-      formData.append('attachments', file);
+    if (this.selectedFiles.length === 0) {
+      console.log('sending WITHOUT attachment!');
+      this.sendEmailWithoutAttachment();
+    } else {
+      console.log('sending WITH attachment!');
+      this.sendEmailWithAttachment();
+    }
+  }
+
+  private sendEmailWithoutAttachment() {
+    const payload = {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message,
+    };
+    // Production
+    this.emailService.sendEmail(payload).subscribe({
+      next: () => {
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+        this.isSending = false;
+        alert('Email sent successfully!');
+      },
+      error: (err) => this.errorSendingEmail(err),
     });
-    // // Uncomment this if you want to test locally with your backend
-    // this.http.post('http://localhost:3000/send-email', formData).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //     this.isSending = false;
+    // // Local Testing
+    // this.http.post('http://localhost:3000/send-email', payload).subscribe({
+    //   next: () => {
     //     alert('Email sent successfully!');
     //     this.name = '';
     //     this.email = '';
     //     this.subject = '';
     //     this.message = '';
-    //     this.selectedFiles = [];
     //   },
-    //   error: (err) => {
-    //     console.error('Email send error:', err);
-    //     this.isSending = false;
-    //     alert('Failed to send email. Please try again later.');
-    //   },
+    //   error: (err) => this.errorSendingEmail(err),
     // });
-    // Use EmailService (works with proxy or production environment)
-    this.emailService.sendEmail(formData).subscribe({
-      next: (res) => {
-        console.log(res);
-        alert('Email sent successfully!');
-        // Clear form fields
+  }
+
+  private sendEmailWithAttachment() {
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('email', this.email);
+    formData.append('subject', this.subject);
+    formData.append('message', this.message);
+
+    this.selectedFiles.forEach((file) => {
+      formData.append('attachments', file);
+    });
+    // Production
+    this.emailService.sendEmailWithAttachments(formData).subscribe({
+      next: () => {
         this.name = '';
         this.email = '';
         this.subject = '';
         this.message = '';
         this.selectedFiles = [];
+        this.fileInput.nativeElement.value = '';
         this.isSending = false;
+        alert('Email sent successfully!');
       },
-      error: (err) => {
-        console.error('Email send error:', err);
-        alert('Failed to send email. Please try again later.');
-        this.isSending = false;
-      },
+      error: (err) => this.errorSendingEmail(err),
     });
+    // // Local Testing
+    // this.http
+    //   .post('http://localhost:3000/send-email-with-attachment', formData)
+    //   .subscribe({
+    //     next: (res) => {
+    //       console.log(res);
+    //       this.name = '';
+    //       this.email = '';
+    //       this.subject = '';
+    //       this.message = '';
+    //       this.selectedFiles = [];
+    //       this.fileInput.nativeElement.value = '';
+    //       this.isSending = false;
+    //       alert('Email sent successfully!');
+    //     },
+    //     error: (err) => this.errorSendingEmail(err),
+    //   });
   }
 
-  onFileSelected(event: any) {
-    const files: FileList = event.target.files;
-    this.selectedFiles = Array.from(files);
+  private errorSendingEmail(error: any) {
+    console.error('Email send error:', error);
+    this.isSending = false;
+    alert('Failed to send email. Please try again later.');
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedFiles.push(...Array.from(input.files));
+    }
+  }
+
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+  }
+
+  clearAllFiles() {
+    this.selectedFiles = [];
+    this.closePreview();
+  }
+
+  previewFile(file: File) {
+    this.previewFileName = file.name;
+    this.fadeClass = 'fade-in';
+
+    const type = file.type;
+
+    if (type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.previewFileUrl = e.target?.result as string;
+        this.dialogTypeClass = 'image-dialog';
+        this.showPreview = true;
+      };
+      reader.readAsDataURL(file);
+    } else if (type === 'application/pdf') {
+      this.previewFileUrl = URL.createObjectURL(file);
+      this.dialogTypeClass = 'pdf-dialog';
+      this.showPreview = true;
+    } else if (type.startsWith('video/')) {
+      this.previewFileUrl = URL.createObjectURL(file);
+      this.dialogTypeClass = 'video-dialog';
+      this.showPreview = true;
+    } else if (type.startsWith('audio/')) {
+      this.previewFileUrl = URL.createObjectURL(file);
+      this.dialogTypeClass = 'audio-dialog';
+      this.showPreview = true;
+    } else {
+      this.previewFileUrl = URL.createObjectURL(file);
+      this.dialogTypeClass = 'other-dialog';
+      this.showPreview = true;
+    }
+  }
+
+  closePreview() {
+    this.fadeClass = 'fade-out';
+    setTimeout(() => {
+      this.showPreview = false;
+      this.previewFileUrl = null;
+      this.previewFileName = '';
+    }, 200);
   }
 }

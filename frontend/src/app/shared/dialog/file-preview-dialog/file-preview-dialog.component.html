@@ -1,0 +1,51 @@
+<div class="dialog-backdrop" *ngIf="visible" (click)="onClose()"></div>
+
+<div
+  class="dialog-content"
+  *ngIf="visible"
+  [ngClass]="fadeClass + ' ' + dialogTypeClass"
+>
+  <div class="dialog-header">
+    <span>{{ fileName }}</span>
+  </div>
+
+  <div class="dialog-body">
+    <!-- IMAGE -->
+    <img
+      *ngIf="fileUrl && isImage(fileName)"
+      [src]="fileUrl"
+      alt="{{ fileName }}"
+    />
+
+    <!-- PDF -->
+    <iframe
+      *ngIf="fileUrl && isPDF(fileName)"
+      [src]="safeFileUrl"
+      width="100%"
+      height="100%"
+    ></iframe>
+
+    <!-- VIDEO -->
+    <video *ngIf="fileUrl && isVideo(fileName)" controls>
+      <source [src]="safeFileUrl" [type]="fileType" />
+      Your browser does not support video playback.
+    </video>
+
+    <!-- AUDIO -->
+    <audio *ngIf="fileUrl && isAudio(fileName)" controls>
+      <source [src]="safeFileUrl" [type]="fileType" />
+      Your browser does not support audio playback.
+    </audio>
+
+    <!-- OTHER FILES -->
+    <p *ngIf="fileUrl && isOther(fileName)">
+      Preview not available.
+      <a [href]="safeFileUrl" download="{{ fileName }}">Download</a>
+    </p>
+
+    <!-- Fallback -->
+    <p *ngIf="!fileUrl">Cannot preview this file type.</p>
+  </div>
+
+  <button class="close-btn" (click)="onClose()">Close</button>
+</div>

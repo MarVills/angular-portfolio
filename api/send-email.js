@@ -1,86 +1,36 @@
-import nodemailer from "nodemailer";
-import formidable from "formidable";
-import fs from "fs";
+import express from "express";
+import cors from "cors";
+import { Resend } from "resend";
+import dotenv from "dotenv";
 
-export const config = {
-  api: {
-    bodyParser: false, // REQUIRED for file uploads
-  },
-};
+dotenv.config();
 
-export default async function handler(req, res) {
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.post("/send-email", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    const data = await resend.emails.send({
+      // from: "New message from your portfolio  <contact@marvills.dev>",
+      from: "Marvills Portfolio Message <onboarding@resend.dev>",
+      to: ["villaflormarbenc@gmail.com"],
+      subject: `Portfolio Message from ${name}`,
+      html: `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p>${message}</p>
+      `,
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
   }
+});
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
-  const form = formidable({ multiples: true, keepExtensions: true });
-
-  // Force formidable to parse files into memory
-  form.onPart = function (part) {
-    if (part.filename) {
-      const chunks = [];
-      part.on("data", (chunk) => chunks.push(chunk));
-      part.on("end", () => {
-        part.buffer = Buffer.concat(chunks);
-      });
-    } else {
-      form.handlePart(part);
-    }
-  };
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error("Form parse error:", err);
-      return res.status(500).json({ error: "Form parsing failed" });
-    }
-
-    const { name, email, message } = fields;
-
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
-
-      const attachments = [];
-
-      if (files.attachments) {
-        const fileArray = Array.isArray(files.attachments) ? files.attachments : [files.attachments];
-
-        for (const file of fileArray) {
-          attachments.push({
-            filename: file.originalFilename,
-            // content: fs.readFileSync(file.filepath),
-            content: file.buffer,
-          });
-        }
-      }
-
-      await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
-        replyTo: email,
-        subject: `New message from ${name}`,
-        text: message,
-        attachments,
-      });
-
-      return res.status(200).json({ success: true });
-    } catch (error) {
-      console.error("Email error:", error);
-      return res.status(500).json({ error: "Email failed" });
-    }
-  });
-}
+app.listen(3000, () => console.log("Email API running on port 3000"));
