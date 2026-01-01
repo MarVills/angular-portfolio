@@ -4,11 +4,5 @@
     "secure": true,
     "changeOrigin": true,
     "logLevel": "debug"
-  },
-  "/old": {
-    "target": "https://angular-portfolio.vercel.app",
-    "secure": true,
-    "changeOrigin": true,
-    "logLevel": "debug"
   }
 }

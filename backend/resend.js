@@ -6,6 +6,8 @@ import multer from "multer";
 
 dotenv.config();
 
+const allowedOrigins = ["http://localhost:4200", "https://angular-portfolio.vercel.app", "https://marvills.github.io"];
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,6 +22,21 @@ const upload = multer({
     fileSize: MAX_TOTAL_SIZE, // absolute max per file
   },
 });
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = `CORS policy: Origin ${origin} not allowed`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  }),
+);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class EmailService {
   private sendEmailAPIUrl = '/api/send-email';
+  // private sendEmailAPIUrl =
+  //   'https://angular-portfolio.vercel.app/api/send-email';
   private sendEmailWithAttachmentAPIUrl =
     'https://angular-portfolio.vercel.app/api/send-email-with-attachments';
 
@@ -18,6 +20,7 @@ export class EmailService {
     subject?: string;
     message: string;
   }): Observable<any> {
+    console.log('sendEmailAPIUrl', this.sendEmailAPIUrl);
     return this.http.post(this.sendEmailAPIUrl, data);
   }
 
