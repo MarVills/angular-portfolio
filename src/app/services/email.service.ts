@@ -7,17 +7,28 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class EmailService {
-  private sendEmailAPIUrl = `${environment.apiUrl}/send-email`;
-  private sendEmailWithAttachmentAPIUrl = `${environment.apiUrl}/send-email-with-attachments`;
+  private baseUrl: string = environment.localApiUrl;
+  private sendEmailAPIUrl = `${this.baseUrl}/send-email`;
+  private sendEmailWithAttachmentAPIUrl = `${this.baseUrl}/send-email-with-attachments`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (environment.type == 'local' && !environment.production) {
+      this.baseUrl = environment.localApiUrl;
+    } else {
+      this.baseUrl = environment.apiUrl;
+    }
+
+    this.sendEmailAPIUrl = `${this.baseUrl}/send-email`;
+    this.sendEmailWithAttachmentAPIUrl = `${this.baseUrl}/send-email-with-attachments`;
+  }
 
   sendEmail(data: {
     name: string;
     email: string;
-    subject?: string;
+    subject: string;
     message: string;
   }): Observable<any> {
+    console.log('sendEmailAPIUrl', this.sendEmailAPIUrl);
     return this.http.post(this.sendEmailAPIUrl, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -26,10 +37,6 @@ export class EmailService {
   }
 
   sendEmailWithAttachments(formData: FormData) {
-    return this.http.post(this.sendEmailWithAttachmentAPIUrl, formData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return this.http.post(this.sendEmailWithAttachmentAPIUrl, formData);
   }
 }

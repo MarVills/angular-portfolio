@@ -5,6 +5,7 @@ import { locale as french } from '../shared/i18n/fr';
 import { HttpClient } from '@angular/common/http';
 import { EmailService } from '../services/email.service';
 import { environment } from '../../environments/environment';
+import { getApiBaseUrl } from '../config/api-base-url';
 
 @Component({
   selector: 'app-contact',
@@ -13,20 +14,24 @@ import { environment } from '../../environments/environment';
 })
 export class ContactComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  name = '';
-  email = '';
-  subject = '';
-  message = '';
-  isSending = false;
-  successMessage = '';
-  errorMessage = '';
+
+  name: string = '';
+  email: string = '';
+  subject: string = '';
+  message: string = '';
+  isSending: boolean = false;
+  successMessage: string = '';
+  errorMessage: string = '';
   selectedFiles: File[] = [];
   fileNames: string = '';
   previewFileUrl: string | null = null;
   previewFileName: string = '';
   showPreview: boolean = false;
-  fadeClass = '';
-  dialogTypeClass = '';
+  fadeClass: string = '';
+  dialogTypeClass: string = '';
+
+  private sendEmailAPIUrl = `${getApiBaseUrl()}/send-email`;
+  private sendEmailWithAttachmentAPIUrl = `${getApiBaseUrl()}/send-email-with-attachments`;
 
   constructor(
     private _translationLoaderService: TranslationLoaderService,
@@ -56,31 +61,17 @@ export class ContactComponent implements OnInit {
       subject: this.subject,
       message: this.message,
     };
-    if (environment.production) {
-      this.emailService.sendEmail(payload).subscribe({
-        next: () => {
-          this.name = '';
-          this.email = '';
-          this.subject = '';
-          this.message = '';
-          this.isSending = false;
-          alert('Email sent successfully!');
-        },
-        error: (err) => this.errorSendingEmail(err),
-      });
-    } else {
-      this.http.post('http://localhost:3000/send-email', payload).subscribe({
-        next: () => {
-          this.name = '';
-          this.email = '';
-          this.subject = '';
-          this.message = '';
-          alert('Email sent successfully!');
-          this.isSending = false;
-        },
-        error: (err) => this.errorSendingEmail(err),
-      });
-    }
+    this.emailService.sendEmail(payload).subscribe({
+      next: () => {
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+        this.isSending = false;
+        alert('Email sent successfully!');
+      },
+      error: (err) => this.errorSendingEmail(err),
+    });
   }
 
   private sendEmailWithAttachment() {
@@ -92,37 +83,19 @@ export class ContactComponent implements OnInit {
     this.selectedFiles.forEach((file) => {
       formData.append('attachments', file);
     });
-    if (environment.production) {
-      this.emailService.sendEmailWithAttachments(formData).subscribe({
-        next: () => {
-          this.name = '';
-          this.email = '';
-          this.subject = '';
-          this.message = '';
-          this.selectedFiles = [];
-          this.fileInput.nativeElement.value = '';
-          alert('Email sent successfully!');
-          this.isSending = false;
-        },
-        error: (err) => this.errorSendingEmail(err),
-      });
-    } else {
-      this.http
-        .post('http://localhost:3000/send-email-with-attachment', formData)
-        .subscribe({
-          next: (res) => {
-            this.name = '';
-            this.email = '';
-            this.subject = '';
-            this.message = '';
-            this.selectedFiles = [];
-            this.fileInput.nativeElement.value = '';
-            alert('Email sent successfully!');
-            this.isSending = false;
-          },
-          error: (err) => this.errorSendingEmail(err),
-        });
-    }
+    this.emailService.sendEmailWithAttachments(formData).subscribe({
+      next: () => {
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+        this.selectedFiles = [];
+        this.fileInput.nativeElement.value = '';
+        alert('Email sent successfully!');
+        this.isSending = false;
+      },
+      error: (err) => this.errorSendingEmail(err),
+    });
   }
 
   private errorSendingEmail(error: any) {
@@ -150,9 +123,7 @@ export class ContactComponent implements OnInit {
   previewFile(file: File) {
     this.previewFileName = file.name;
     this.fadeClass = 'fade-in';
-
     const type = file.type;
-
     if (type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (e) => {
