@@ -4,18 +4,20 @@ export const config = {
   runtime: "nodejs",
 };
 
-const ALLOWED_ORIGINS = ["https://marvills.github.io", "http://localhost:4200"];
+// const ALLOWED_ORIGINS = ["https://marvills.github.io", "http://localhost:4200"];
 
 export default async function handler(req, res) {
-  const origin = req.headers.origin;
+  // const origin = req.headers.origin;
+  // if (ALLOWED_ORIGINS.includes(origin)) {
+  //   res.setHeader("Access-Control-Allow-Origin", origin);
+  // }
+  // res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  // res.setHeader("Vary", "Origin");
 
-  if (ALLOWED_ORIGINS.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();

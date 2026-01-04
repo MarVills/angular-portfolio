@@ -18,7 +18,8 @@ export class EmailService {
       this.baseUrl = environment.apiUrl;
     }
 
-    this.sendEmailAPIUrl = `${this.baseUrl}/send-email`;
+    this.sendEmailAPIUrl = `/api/send-email`;
+    // this.sendEmailAPIUrl = 'https://angular-portfolio.vercel.app/api/send-email';
     this.sendEmailWithAttachmentAPIUrl = `${this.baseUrl}/send-email-with-attachments`;
   }
 

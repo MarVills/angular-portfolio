@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: '/api', // for proxy usage
+  apiUrl: '', // for proxy usage
   localApiUrl: 'http://localhost:3000', // direct
   type: 'development', // local | development | staging | production
 };
