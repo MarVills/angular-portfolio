@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export default async function handler(req, res) {
   // Allow all origins (or replace "*" with your frontend URL)
   res.setHeader("Access-Control-Allow-Origin", "*");
