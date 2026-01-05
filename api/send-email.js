@@ -2,40 +2,56 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req, res) {
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+export async function POST() {
+  const response = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: ["delivered@resend.dev"],
+    subject: "hello world",
+    html: "<strong>it works!</strong>",
+  });
 
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST")
-    return res.status(405).json({ message: "Method not allowed" });
-
-  const { name, email, subject, message } = req.body;
-
-  if (!name || !email || !subject || !message) {
-    return res.status(400).json({ message: "Missing fields" });
-  }
-
-  try {
-    await resend.emails.send({
-      from: `Marvills Portfolio <onboarding@resend.dev>`,
-      to: [process.env.MY_EMAIL],
-      subject: subject || `Portfolio Message from ${name}`,
-      html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p>${message}</p>
-      `,
-    });
-
-    return res.status(200).json({ message: "Email sent successfully" });
-  } catch (err) {
-    console.error("Resend error:", err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
+  return Response.json(response, {
+    status: response.error ? 500 : 200,
+  });
 }
+// import { Resend } from "resend";
+
+// const resend = new Resend(process.env.RESEND_API_KEY);
+
+// export default async function handler(req, res) {
+//   // CORS
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+//   if (req.method === "OPTIONS") return res.status(200).end();
+//   if (req.method !== "POST")
+//     return res.status(405).json({ message: "Method not allowed" });
+
+//   const { name, email, subject, message } = req.body;
+
+//   if (!name || !email || !subject || !message) {
+//     return res.status(400).json({ message: "Missing fields" });
+//   }
+
+//   try {
+//     await resend.emails.send({
+//       from: `Marvills Portfolio <onboarding@resend.dev>`,
+//       to: [process.env.MY_EMAIL],
+//       subject: subject || `Portfolio Message from ${name}`,
+//       html: `
+//         <p><strong>Name:</strong> ${name}</p>
+//         <p><strong>Email:</strong> ${email}</p>
+//         <p>${message}</p>
+//       `,
+//     });
+
+//     return res.status(200).json({ message: "Email sent successfully" });
+//   } catch (err) {
+//     console.error("Resend error:", err);
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// }
 
 // try {
 //   const transporter = nodemailer.createTransport({
