@@ -1,7 +1,0 @@
-# Ignore everything
-
--
-
-# Except build output
-
-!dist/portfolio-main/\*\*
