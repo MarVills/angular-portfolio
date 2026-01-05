@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: '', // for proxy usage
+  apiUrl: '/api', // for proxy usage
   localApiUrl: 'http://localhost:3000', // direct
-  type: 'development', // local | development | staging | production
+  type: 'local', // local | development | staging | production
 };
 
 /*

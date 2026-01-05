@@ -18,9 +18,8 @@ export class EmailService {
       this.baseUrl = environment.apiUrl;
     }
 
-    // this.sendEmailAPIUrl = `/api/send-email`;
-    this.sendEmailAPIUrl =
-      'https://angular-portfolio.vercel.app/api/send-email';
+    this.sendEmailAPIUrl = `/api/send-email`;
+    // this.sendEmailAPIUrl ='https://angular-portfolio.vercel.app/api/send-email';
     this.sendEmailWithAttachmentAPIUrl = `${this.baseUrl}/send-email-with-attachments`;
   }
 
@@ -31,15 +30,11 @@ export class EmailService {
     message: string;
   }): Observable<any> {
     console.log('sendEmailAPIUrl', this.sendEmailAPIUrl);
-    return this.http.post(
-      this.sendEmailAPIUrl,
-      data
-      //   {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // }
-    );
+    return this.http.post(this.sendEmailAPIUrl, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 
   sendEmailWithAttachments(formData: FormData) {
