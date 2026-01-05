@@ -1,12 +1,6 @@
-import nodemailer from "nodemailer";
-import formidable from "formidable";
-import fs from "fs";
+import { Resend } from "resend";
 
-export const config = {
-  api: {
-    bodyParser: false, // REQUIRED for file uploads
-  },
-};
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
   // CORS
@@ -14,64 +8,33 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
+  if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const form = formidable({ multiples: true });
+  const { name, email, message } = req.body;
 
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error("Form parse error:", err);
-      return res.status(500).json({ error: "Form parsing failed" });
-    }
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false });
+  }
 
-    const { name, email, message } = fields;
+  try {
+    await resend.emails.send({
+      from: "Marvills Portfolio <onboarding@resend.dev>",
+      to: ["villaflormarbenc@gmail.com"],
+      subject: `Portfolio Message from ${name}`,
+      html: `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p>${message}</p>
+      `,
+    });
 
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS, // App password recommended
-        },
-      });
-
-      // ✅ Handle attachments
-      const attachments = [];
-
-      if (files.attachments) {
-        const fileArray = Array.isArray(files.attachments)
-          ? files.attachments
-          : [files.attachments];
-
-        for (const file of fileArray) {
-          attachments.push({
-            filename: file.originalFilename,
-            content: fs.readFileSync(file.filepath),
-          });
-        }
-      }
-
-      await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-        to: process.env.EMAIL_USER,
-        replyTo: email,
-        subject: `New message from ${name}`,
-        text: message,
-        attachments,
-      });
-
-      return res.status(200).json({ success: true });
-    } catch (error) {
-      console.error("Email error:", error);
-      return res.status(500).json({ error: "Email failed" });
-    }
-  });
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false });
+  }
 }
 
 // import { Resend } from "resend";
