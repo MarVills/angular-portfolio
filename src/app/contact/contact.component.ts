@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { EmailService } from '../services/email.service';
 import { environment } from '../../environments/environment';
 import { getApiBaseUrl } from '../config/api-base-url';
+import { Resend } from 'resend';
 
 @Component({
   selector: 'app-contact',
@@ -42,6 +43,18 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  // sendEmailTest() {
+  //   const apiKey = 're_C6PbqtWh_Jx5uzrpjVm2BcJj9N7chsLWc';
+  //   const resend = new Resend(apiKey);
+
+  //   resend.emails.send({
+  //     from: 'Portfolio <[email protected]>',
+  //     to: ['[email protected]'],
+  //     subject: 'Test',
+  //     html: '<strong>Hello!</strong>',
+  //   });
+  // }
 
   sendEmail() {
     this.isSending = true;
