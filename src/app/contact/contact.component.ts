@@ -61,12 +61,12 @@ export class ContactComponent implements OnInit {
       }
 
       const templateParams = {
-        name: this.name, // match EmailJS template
+        full_name: this.name, // match EmailJS template
         email: this.email,
         subject: this.subject,
         message: this.message,
         time: new Date().toLocaleString(),
-        attachment_info: attachmentInfo,
+        attachments: attachmentInfo,
       };
 
       await emailjs.send(
@@ -140,7 +140,15 @@ export class ContactComponent implements OnInit {
   //   }
   // }
 
-  fileToBase64(file: File): Promise<string> {
+  fileToBase64(file: File): Promise<string | null> {
+    const MAX_ATTACHMENT_SIZE = 50 * 1024; // 50 KB
+    if (file.size > MAX_ATTACHMENT_SIZE) {
+      // Skip this file and warn the user
+      alert(
+        `File "${file.name}" is too large (>50 KB). Please use a link instead.`,
+      );
+      return Promise.resolve(null); // return null instead of nothing
+    }
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
