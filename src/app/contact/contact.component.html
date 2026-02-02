@@ -1,5 +1,5 @@
 <section id="contact">
-  <form (ngSubmit)="sendEmail()" #contactForm="ngForm">
+  <form (ngSubmit)="sendEmailJs()" #contactForm="ngForm">
     <div class="container mb-5">
       <h2>
         <strong>{{ "contact.contactMe" | translate }}</strong>
@@ -143,4 +143,5 @@
   [visible]="showPreview"
   [ngClass]="fadeClass"
   (close)="closePreview()"
-></app-file-preview-dialog>
+>
+</app-file-preview-dialog>

@@ -19,6 +19,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ReferencesComponent } from './references/references.component';
 import { FilePreviewDialogComponent } from './shared/dialog/file-preview-dialog/file-preview-dialog.component';
 import { SkillsComponent } from './skills/skills.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { SkillsComponent } from './skills/skills.component';
     MatFormFieldModule,
     MatInputModule,
     HttpClientModule,
-    // TranslateModule.forRoot(),
+    TranslateModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

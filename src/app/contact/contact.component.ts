@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { EmailService } from '../services/email.service';
 import { environment } from '../../environments/environment';
 import { getApiBaseUrl } from '../config/api-base-url';
-import { Resend } from 'resend';
+// import { Resend } from 'resend';
+import emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-contact',
@@ -37,24 +38,42 @@ export class ContactComponent implements OnInit {
   constructor(
     private _translationLoaderService: TranslationLoaderService,
     private emailService: EmailService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this._translationLoaderService.loadTranslations(english, french);
   }
 
   ngOnInit(): void {}
 
-  // sendEmailTest() {
-  //   const apiKey = 're_C6PbqtWh_Jx5uzrpjVm2BcJj9N7chsLWc';
-  //   const resend = new Resend(apiKey);
+  sendEmailJs() {
+    this.isSending = true;
 
-  //   resend.emails.send({
-  //     from: 'Portfolio <[email protected]>',
-  //     to: ['[email protected]'],
-  //     subject: 'Test',
-  //     html: '<strong>Hello!</strong>',
-  //   });
-  // }
+    const templateParams = {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message,
+    };
+
+    emailjs
+      .send(
+        'service_obmogud',
+        'template_9pbqe2h',
+        templateParams,
+        'OVaIyrUsnfxVv6vm8',
+      )
+      .then(
+        (response) => {
+          this.isSending = false;
+          alert('Email sent successfully!');
+        },
+        (error) => {
+          this.isSending = false;
+          console.error(error);
+          alert('Failed to send email.');
+        },
+      );
+  }
 
   sendEmail() {
     this.isSending = true;
