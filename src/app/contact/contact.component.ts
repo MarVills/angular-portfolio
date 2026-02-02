@@ -45,34 +45,116 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  sendEmailJs() {
+  async sendEmailJs() {
+    if (!this.name || !this.email || !this.message) {
+      alert('Please fill all required fields!');
+      return;
+    }
     this.isSending = true;
 
-    const templateParams = {
-      name: this.name,
-      email: this.email,
-      subject: this.subject,
-      message: this.message,
-    };
+    try {
+      let attachmentInfo = '';
+      if (this.selectedFiles.length > 0) {
+        attachmentInfo = this.selectedFiles
+          .map((file) => `Attachment: ${file.name} (please provide link)`)
+          .join('\n');
+      }
 
-    emailjs
-      .send(
-        'service_obmogud',
-        'template_9pbqe2h',
+      const templateParams = {
+        name: this.name, // match EmailJS template
+        email: this.email,
+        subject: this.subject,
+        message: this.message,
+        time: new Date().toLocaleString(),
+        attachment_info: attachmentInfo,
+      };
+
+      await emailjs.send(
+        'service_obmogud', // your Service ID
+        'template_hx7cmdn', // your Template ID
         templateParams,
-        'OVaIyrUsnfxVv6vm8',
-      )
-      .then(
-        (response) => {
-          this.isSending = false;
-          alert('Email sent successfully!');
-        },
-        (error) => {
-          this.isSending = false;
-          console.error(error);
-          alert('Failed to send email.');
-        },
+        'OVaIyrUsnfxVv6vm8', // Public Key
       );
+
+      alert('Email sent successfully!');
+      this.clearForm();
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      alert('Failed to send email.');
+    } finally {
+      this.isSending = false;
+    }
+  }
+
+  // async sendEmailJs() {
+  //   if (!this.name || !this.email || !this.message) {
+  //     alert('Please fill all required fields!');
+  //     return;
+  //   }
+  //   this.isSending = true;
+  //   try {
+  //     const MAX_ATTACHMENT_SIZE = 50 * 1024; // 50 KB limit
+  //     const totalSize = this.selectedFiles.reduce((sum, f) => sum + f.size, 0);
+
+  //     let attachmentInfo = '';
+
+  //     if (totalSize > MAX_ATTACHMENT_SIZE) {
+  //       attachmentInfo =
+  //         'Attachments are too large. Please share links instead.';
+  //     } else if (this.selectedFiles.length > 0) {
+  //       const attachments = await Promise.all(
+  //         this.selectedFiles.map((file) => this.fileToBase64(file)),
+  //       );
+
+  //       attachmentInfo = attachments
+  //         .map(
+  //           (data, index) =>
+  //             `${this.selectedFiles[index].name} (Base64 attached)`,
+  //         )
+  //         .join(', ');
+  //     }
+
+  //     const templateParams = {
+  //       name: this.name,
+  //       email: this.email,
+  //       subject: this.subject,
+  //       message: this.message,
+  //       time: new Date().toLocaleString(),
+  //       attachment_info: attachmentInfo,
+  //     };
+
+  //     await emailjs.send(
+  //       'service_obmogud',
+  //       'template_hx7cmdn',
+  //       templateParams,
+  //       'OVaIyrUsnfxVv6vm8',
+  //     );
+
+  //     alert('Email sent with attachment!');
+  //     this.clearForm();
+  //   } catch (error) {
+  //     console.error('EmailJS attachment error:', error);
+  //     alert('Failed to send email.');
+  //   } finally {
+  //     this.isSending = false;
+  //   }
+  // }
+
+  fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  clearForm() {
+    this.name = '';
+    this.email = '';
+    this.subject = '';
+    this.message = '';
+    this.selectedFiles = [];
   }
 
   sendEmail() {
