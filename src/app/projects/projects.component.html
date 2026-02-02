@@ -1,4 +1,4 @@
-<section id="portfolio">
+<section id="projects">
   <div class="container">
     <h2>
       <strong>{{ "projects.title" | translate }} </strong>
@@ -8,7 +8,7 @@
       <div
         class="col-lg-4 col-sm-12"
         data-aos="flip-up"
-        *ngFor="let project of projects"
+        *ngFor="let project of projectList"
       >
         <div class="card shadow-lg p-3 mb-5 bg-white rounded">
           <div
@@ -19,9 +19,7 @@
               id="{{ project.id }}-img"
               class="img-wrap"
               style="height: 300px; width: 100%"
-              [ngStyle]="{
-                backgroundImage: 'url(' + project.images[0].src + ')'
-              }"
+              [style.background-image]="'url(' + project.images[0].src + ')'"
             ></div>
             <div
               id="{{ project.id }}-link"
@@ -33,8 +31,9 @@
                 data-gall="project.id"
                 class="venobox vbox-item"
                 title="{{ image.title }}"
-                ><i *ngIf="index == 0" class="bx bx-zoom-in bx-md"></i
-              ></a>
+              >
+                <i *ngIf="index == 0" class="bx bx-zoom-in bx-md"></i>
+              </a>
               <a href="{{ project.url }}" title="" target="_BLANK"
                 ><i class="bx bx-link bx-md"></i
               ></a>
@@ -47,7 +46,6 @@
             <div class="d-flex flex-row justify-content-center">
               <a
                 href="{{ project.codeSourceUrl }}"
-                target="_blank"
                 target="_blank"
                 type="button"
                 class="btn btn-primary mr-3"

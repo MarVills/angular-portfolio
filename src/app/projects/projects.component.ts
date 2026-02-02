@@ -11,16 +11,16 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit {
-  projects: any[] = projectsEn;
+  projectList: any[] = projectsEn;
   venobox: any;
   constructor(
     private _translationLoaderService: TranslationLoaderService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
   ) {
     this._translationLoaderService.loadTranslations(english, french);
     this._translateService.onLangChange.subscribe(() => {
       if (this._translateService.currentLang == 'en') {
-        this.projects = projectsEn;
+        this.projectList = projectsEn;
       }
     });
   }
@@ -39,7 +39,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   detailOnClick(project: any) {
-    this.projects
+    this.projectList
       .filter((item) => item.detailIsDisplayed && item.id != project.id)
       .map((elem) => (elem.detailIsDisplayed = false));
     project.detailIsDisplayed = !project.detailIsDisplayed;

@@ -45,9 +45,19 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  isValidEmail(email: string) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
   async sendEmailJs() {
     if (!this.name || !this.email || !this.message) {
       alert('Please fill all required fields!');
+      return;
+    }
+
+    if (!this.isValidEmail(this.email)) {
+      alert('Please enter a valid email address!');
       return;
     }
     this.isSending = true;
